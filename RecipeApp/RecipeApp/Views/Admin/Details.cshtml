@@ -1,0 +1,31 @@
+﻿@model RecipeApp.Models.Recipe
+
+<div class="container mt-4">
+    <h2>@Model.Name</h2>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <small class="text-muted">
+            Date added: @Model.DateAdded.ToString("dd MMM yyyy")
+        </small>
+        <small class="text-muted">
+            Author: @Model.Author?.Email
+        </small>
+    </div>
+
+    <h4>Ingredients</h4>
+    <ul>
+        @foreach (var line in Model.Ingredients.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries))
+        {
+            <li>@line</li>
+        }
+    </ul>
+
+    <h4>Instructions</h4>
+    <div>
+        @Html.Raw(Model.InstructionsHtml)
+    </div>
+</div>
+
+<p>
+    <a asp-controller="Admin" asp-action="Index">Back to the list</a>
+</p>

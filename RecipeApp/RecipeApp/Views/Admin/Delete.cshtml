@@ -1,0 +1,11 @@
+﻿@model RecipeApp.Models.Recipe
+
+<h2>Delete Recipe</h2>
+
+<p>Are you sure you want to delete <strong>@Model.Name</strong>?</p>
+
+<form asp-action="DeleteConfirmed" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit">Yes, Delete</button>
+    <a asp-controller="Admin" asp-action="Index">Cancel</a>
+</form>

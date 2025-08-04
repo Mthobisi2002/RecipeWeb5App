@@ -1,0 +1,80 @@
+﻿@model List<RecipeApp.Models.Recipe>
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Recipes</h2>
+
+    <!-- Create button -->
+    <div class="text-end mb-3">
+        <a asp-controller="Admin" asp-action="Create" class="btn btn-primary">+ Create New Recipe</a>
+    </div>
+
+    <!-- Grid of recipe cards -->
+    <div class="row" id="recipeGrid">
+        @foreach (var recipe in Model)
+        {
+            <div class="col-md-4 mb-4 text-center">
+                <div class="card h-100">
+                    <img src="@recipe.ImageUrl"
+                         alt="@recipe.Name"
+                         class="card-img-top img-fluid"
+                         style="max-height: 200px; object-fit: cover;"
+                         onerror="this.src='/Image/placeholder.jpg'" />
+
+                    <div class="card-body">
+                        <h5 class="card-title">@recipe.Name</h5>
+                        <p class="card-text">
+                            <small class="text-muted">By @recipe.Author?.Email</small><br />
+                            <small class="text-muted">@recipe.DateAdded.ToShortDateString()</small>
+                        </p>
+                    </div>
+
+                    <div class="card-footer">
+                        <a asp-controller="Admin" asp-action="Edit" asp-route-id="@recipe.Id" class="btn btn-sm btn-outline-primary">Edit</a>
+                        <a asp-controller="Admin" asp-action="Delete" asp-route-id="@recipe.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+                        <a asp-controller="Admin" asp-action="Details" asp-route-slug="@recipe.Slug" class="btn btn-sm btn-outline-secondary">Details</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Load More Button (optional) -->
+    <div class="text-center mt-4">
+        <button id="loadMoreBtn" class="btn btn-outline-dark">LOAD MORE</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        let skip = @Model.Count;
+        const totalCount = @ViewBag.TotalCount;
+        const loadMoreBtn = document.getElementById("loadMoreBtn");
+
+        loadMoreBtn?.addEventListener("click", () => {
+            fetch(`/Admin/Index?skip=${skip}`, {
+                headers: { "X-Requested-With": "XMLHttpRequest" }
+            })
+                .then(res => res.text())
+                .then(html => {
+                    const grid = document.getElementById("recipeGrid");
+                    grid.insertAdjacentHTML('beforeend', html);
+
+                    // Count how many new items were added
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = html;
+                    const newItems = tempDiv.querySelectorAll('.card');
+
+                    if (newItems.length > 0) {
+                        skip += newItems.length;
+                    }
+
+                    // ✅ Only hide the button if we've loaded all items
+                    if (skip >= totalCount) {
+                        loadMoreBtn.style.display = "none";
+                    }
+                });
+        });
+    </script>
+}
+
+

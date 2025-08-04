@@ -1,0 +1,34 @@
+﻿@model RecipeApp.Models.ViewModels.RecipeViewModel
+
+<h2>Edit Recipe</h2>
+
+<form asp-controller="Admin" asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div>
+        <label asp-for="Name"></label>
+        <input asp-for="Name" />
+        <span asp-validation-for="Name"></span>
+    </div>
+
+    <div>
+        <label asp-for="ImageUrl"></label>
+        <input asp-for="ImageUrl" />
+        <span asp-validation-for="ImageUrl"></span>
+    </div>
+
+    <div>
+        <label asp-for="Ingredients"></label>
+        <textarea asp-for="Ingredients"></textarea>
+        <span asp-validation-for="Ingredients"></span>
+    </div>
+
+    <div>
+        <label asp-for="InstructionsHtml"></label>
+        <textarea asp-for="InstructionsHtml"></textarea>
+        <span asp-validation-for="InstructionsHtml"></span>
+    </div>
+
+    <button type="submit">Update</button>
+    <a asp-controller="Admin" asp-action="Index">Cancel</a>
+</form>
