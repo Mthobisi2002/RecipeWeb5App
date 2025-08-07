@@ -25,12 +25,22 @@
 
     </div>
 
-    <div>
+    <div class="form-group">
         <label asp-for="InstructionsHtml"></label>
-        <textarea asp-for="InstructionsHtml"></textarea>
-        <span asp-validation-for="InstructionsHtml"></span>
+        <textarea asp-for="InstructionsHtml" class="form-control" rows="10"></textarea>
+        <span asp-validation-for="InstructionsHtml" class="text-danger"></span>
     </div>
+
 
     <button type="submit">Save</button>
     <a asp-action="Index">Cancel</a>
 </form>
+
+@section Scripts {
+    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#InstructionsHtml'))
+            .catch(error => console.error(error));
+    </script>
+}
